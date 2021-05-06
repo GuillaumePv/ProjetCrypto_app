@@ -76,15 +76,19 @@ def socialInit(sent, period = 'daily'):
         else:
             df['smoothed_sentiment'] = (df['sentiment'].rolling(100).mean() + 1) / 2
     else:
-        df['smoothed_sentiment'] = (df['sentiment'].rolling(50).mean() + 1) / 2
+        if sent == "Bitcoin":
+            df['smoothed_sentiment'] = (df['sentiment'].rolling(50).mean() + 1) / 2
+        else:
+            df['smoothed_sentiment'] = (df['sentiment'].rolling(35).mean() + 1) / 2
 
 
     # date column
+    df = df.dropna()
     df['date'] = pd.to_datetime(df['unix'], unit = 'ms')
     if 'date' in df.columns:
         df.sort_values('date', inplace=True)
 
-    df = df.dropna()
+
 
     return df
 

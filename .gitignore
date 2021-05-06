@@ -11,6 +11,7 @@
 *.mdb
 *.pdb
 *.sqlite3
+*.json
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

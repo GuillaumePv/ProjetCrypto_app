@@ -139,6 +139,7 @@ connLive.commit()
 if os.path.isdir('tempTweets'):
     shutil.rmtree('tempTweets')
 
+
 #Callbacks for content
 
 @app.callback(Output('dbDaily', 'children'),
