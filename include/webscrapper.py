@@ -26,7 +26,7 @@ def scrapCoin():
                 #print(row[0].text)
                 row_value.append(row[0].text) #Ranks
                 row_value.append(row[1].text) #Name
-                print(row[2].text)
+                #print(row[2].text)
                 row_value.append(row[2].text) #Symbol
                 row_value.append(row[3].text) #Market cap
                 row_value.append(row[4].text) #Price
@@ -39,7 +39,8 @@ def scrapCoin():
                 
                 logging.debug(f"=== Process {row[1].text} / Rank: {row[0].text}/ {len(soup.find_all('tr')[3:])} ===")
         except Exception as e:
-            print(e)
+            pass
+            #print(e)
             #print(f"=== Process {row[1].text} / Rank: {row[0].text}/ {len(soup.find_all('tr')[3:])} ===")
         columns = ["Ranks","Name","Symbol","Market Cap","Price","Circulating Supply","Volume(24h)","%1h","%24h","%7d"]
         df = pd.DataFrame(table_value,columns=columns)
