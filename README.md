@@ -27,7 +27,8 @@ pip3 install -r requirements.txt
 - [ ] faire fonctionner twint sur heroku
 - [ ] Ecrire le rapport
 - [ ] tourner la vidéo de présentation
-- [ ] tester avec un subprocess + launch tab => style jupyter notebook
+- [x] tester avec un subprocess + launch tab => style jupyter notebook
+- [ ] améliorer le launcher en installant toutes les libraires
 
 ## Code
 
