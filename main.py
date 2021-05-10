@@ -6,6 +6,7 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_table as dtable
+import flask
 import plotly
 import logging
 import random
@@ -139,6 +140,7 @@ connLive.commit()
 if os.path.isdir('tempTweets'):
     shutil.rmtree('tempTweets')
 
+
 #Callbacks for content
 
 @app.callback(Output('dbDaily', 'children'),
@@ -177,6 +179,13 @@ def update_content(sent, period, num):
               Input('social_drop_interval', 'n_intervals')])
 def loadList(typeChoice, sent, num):
     return social.socialDrop(typeChoice, sent)
+
+@app.server.route('/tempTweets/<path:path>')
+def serve_static(path):
+    root_dir = os.getcwd()
+    return flask.send_from_directory(
+        os.path.join(root_dir, 'tempTweets'), path
+    )
 
 
 ##################

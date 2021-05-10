@@ -76,15 +76,23 @@ def socialInit(sent, period = 'daily'):
         else:
             df['smoothed_sentiment'] = (df['sentiment'].rolling(100).mean() + 1) / 2
     else:
-        df['smoothed_sentiment'] = (df['sentiment'].rolling(50).mean() + 1) / 2
+        if sent == "Bitcoin":
+            df['smoothed_sentiment'] = (df['sentiment'].rolling(50).mean() + 1) / 2
+        else:
+            df['smoothed_sentiment'] = (df['sentiment'].rolling(35).mean() + 1) / 2
 
 
     # date column
-    df['date'] = pd.to_datetime(df['unix'], unit = 'ms')
+    df = df.dropna()
+
+    if len(df['unix']):
+        df['date'] = pd.to_datetime(df['unix'], unit = 'ms')
+
     if 'date' in df.columns:
         df.sort_values('date', inplace=True)
 
-    df = df.dropna()
+
+
 
     return df
 
@@ -149,8 +157,17 @@ def socialGraph(sent, period):
                                     'layout': go.Layout(
                                         margin={'l': 80, 'b': 40, 't': 90, 'r': 40})
                                    }
-                            ), style={'width':'30%', 'display':'inline-block'})
+                            ), style={'width':'30%', 'display':'inline-block'}),
+                    html.Div(
+                        html.A(
+                        f"Download {sent} {period} sentiment data by clicking on me !",
+                        href=f"tempTweets/{period}Tweets{sent}.json",
+                        download=f"{sent}{period}sent"
+                        ), style={"padding":"2em"}
+                    )
+
                     ])
+
     else:
         content = html.Div("LOADING GRAPHS ...", style={'padding': '10em', 'display':'inline-block'})
 
