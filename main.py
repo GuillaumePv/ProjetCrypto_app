@@ -169,7 +169,9 @@ def loadHeader(crypto):
                Input('tweetPeriod', 'value'),
                Input('social_interval', 'n_intervals')])
 def update_content(sent, period, num):
-    content = social.socialGraph(sent, period)
+    df = coindf[coindf['Name'] == sent]
+    crypto = df['Symbol'].values[0]
+    content = social.socialGraph(sent, period, crypto)
     return content
 
 #Tweet dropdown
