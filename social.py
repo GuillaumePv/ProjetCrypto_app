@@ -14,12 +14,23 @@ import logging
 import random
 import os
 import numpy as np
+
+#binance utilities
+from binance.websockets import BinanceSocketManager
+from binance.client import Client
+import include.config
+import websocket, json, pprint
+from datetime import datetime
+
 from dash.dependencies import Output, State, Input
 import plotly.graph_objs as go
 
 import include.tweet_stream as ts
 from collections import deque
+
 import dash_bootstrap_components as dbc
+
+
 
 def socialInit(sent, period = 'daily'):
 
@@ -91,10 +102,9 @@ def socialInit(sent, period = 'daily'):
     if 'date' in df.columns:
         df.sort_values('date', inplace=True)
 
-
-
-
     return df
+
+
 
 
 def socialHeader(crypto):
@@ -159,11 +169,13 @@ def socialGraph(sent, period):
                                    }
                             ), style={'width':'30%', 'display':'inline-block'}),
                     html.Div(
-                        html.A(
-                        f"Download {sent} {period} sentiment data by clicking on me !",
-                        href=f"tempTweets/{period}Tweets{sent}.json",
-                        download=f"{sent}{period}sent"
-                        ), style={"padding":"2em"}
+                        html.Button(
+                            children=html.A(
+                            f"Download {sent} {period} sentiment data",
+                            href=f"tempTweets/{period}Tweets{sent}.json",
+                            download=f"{sent}{period}sent"
+                            ), style={"margin":"2em", "color":"black"}
+                        )
                     )
 
                     ])
