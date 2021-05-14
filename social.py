@@ -14,6 +14,7 @@ import logging
 import random
 import os
 import numpy as np
+import datetime as dt
 
 #binance utilities
 from binance.websockets import BinanceSocketManager
@@ -148,9 +149,17 @@ def socialGraph(sent, period, crypto):
 
     dfPrice = getPrice(crypto, period)
 
+
+    if period == 'daily':
+        dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 1)))
+    else:
+        dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 30)))
+        
+    dfPrice = dfPrice.dropna()
+
     #scale bitcoin price
     dfPrice['Close'] = 0.25 + (dfPrice['Close'] - min(dfPrice['Close']))/(2*(max(dfPrice['Close']) - min(dfPrice['Close'])))
-    dfPrice =  dfPrice.iloc[2:,:]
+
     #Update Content
     ###############
 
