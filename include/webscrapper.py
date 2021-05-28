@@ -25,8 +25,9 @@ def scrapCoin():
                 row = value.find_all('td')
                 #print(row[0].text)
                 row_value.append(row[0].text) #Ranks
-                row_value.append(row[1].text) #Name
-                #print(row[2].text)
+                #row[1].text = row[1].text.replace(row[2].text,"")
+                name = row[1].text.replace(row[2].text,"")
+                row_value.append(name) #Name
                 row_value.append(row[2].text) #Symbol
                 row_value.append(row[3].text) #Market cap
                 row_value.append(row[4].text) #Price
@@ -47,6 +48,7 @@ def scrapCoin():
         #print(len(table_value))
         df.index = df["Ranks"]
         df = df.iloc[:,1:]
+        #print(df)
         return df
     except Exception as e:
         #print(e)

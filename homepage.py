@@ -71,7 +71,7 @@ def homePage():
             dbc.Row([
                 html.Div([card_person(name='Dimitri André',img='Dim_andre.jpg')],className="m-4"),
                 html.Div([card_person("Guillaume Pavé", img='GP.jpg')],className="m-4"),
-                html.Div([card_person("Ruben Kempter", img='GP.jpg')],className="m-4"),
+                html.Div([card_person("Ruben Kempter", img='ruben_kempter.jpeg')],className="m-4"),
             ],className="justify-content-center m-4"),
             
             html.H4('Explanation of our Project',className="text-center"),

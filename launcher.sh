@@ -1,16 +1,25 @@
 #!/bin/sh
 
 DIR="./venv/"
+echo "========================================================================="
+echo "=========================== Launcher ===================================="
+echo "========================================================================="
+echo "Crypto Project is launching"
+echo "If you do not installed all Python package, this script will intall all packages for you"
+echo "Program could take several minute to run !!!"
+echo "Enjoy our crypto dashboard !!!"
+echo "========================================================================="
+echo ""
 if [ -d "$DIR" ]; then
   ### Take action if $DIR exists ###
   echo "all packages are installed"
   case "$OSTYPE" in
   darwin*)  
-  echo "OSX"
+  #echo "OSX"
   source venv/bin/activate 
   ;; 
   linux*)   
-  echo "LINUX"
+  #echo "LINUX"
   echo "source venv/bin/activate" 
   ;;
   msys*)    
@@ -20,26 +29,26 @@ if [ -d "$DIR" ]; then
   *)        echo "unknown: $OSTYPE" ;;
     esac
 else
-  ###  Control will jump here if $DIR does NOT exists ###
   echo "Error: ${DIR} not found. You're installing all packages"
   python3 -m venv venv
   case "$OSTYPE" in
   darwin*)  
-  echo "OSX"
-  echo "source venv/bin/activate" 
+  #echo "OSX"
+  source venv/bin/activate
   ;; 
   linux*)   
-  echo "LINUX"
-  echo "source venv/bin/activate" 
+  #echo "LINUX"
+  source venv/bin/activate
   ;;
   msys*)    
-  echo "WINDOWS"
-  echo ".\venv\Scripts\activate" 
+  #echo "WINDOWS"
+  .\venv\Scripts\activate
   ;;
   *)        echo "unknown: $OSTYPE" ;;
     esac
   pip3 install . -r requirements.txt
 fi
-echo "suite du script"
+#echo "suite du script"
 open http://127.0.0.1:8050/
 python3 main.py
+
