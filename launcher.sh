@@ -1,5 +1,7 @@
 #!/bin/sh
-
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
+echo "$parent_path"
 DIR="./venv/"
 echo "========================================================================="
 echo "=========================== Launcher ===================================="
@@ -54,6 +56,7 @@ else
   cd ..
   pip3 install -r requirements.txt
 fi
+source venv/bin/activate
 echo "App is loading...."
 python3 main.py
 
