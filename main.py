@@ -29,6 +29,9 @@ import social
 import analysisTab
 from homepage import homePage
 
+import webbrowser
+from threading import Timer
+
 # Initialize log file #
 logging.basicConfig(filename='infos.log',level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -36,6 +39,11 @@ logging.basicConfig(filename='infos.log',level=logging.DEBUG, format='%(asctime)
 #############################
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
+port = 8050 # or simply open on the default `8050` port
+
+def open_browser():
+	webbrowser.open_new("http://localhost:{}".format(port))
+
 server = app.server
 
 global coindf
@@ -279,5 +287,5 @@ def render_content(tab):
 
 #Run the app if it is main
 if __name__ == '__main__':
-
-    app.run_server(debug=True)
+    Timer(0.5, open_browser).start()
+    app.run_server(debug=True, port=port)

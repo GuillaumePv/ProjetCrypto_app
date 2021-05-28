@@ -25,8 +25,12 @@ def scrapCoin():
                 row = value.find_all('td')
                 #print(row[0].text)
                 row_value.append(row[0].text) #Ranks
+                if row[2].text in row[1].text:
+                    name = row[1].text.replace(row[2].text,"")
+                else:
+                    name = row[1].text
                 #row[1].text = row[1].text.replace(row[2].text,"")
-                name = row[1].text.replace(row[2].text,"")
+                #name = row[1].text.replace(row[2].text,"")
                 row_value.append(name) #Name
                 row_value.append(row[2].text) #Symbol
                 row_value.append(row[3].text) #Market cap
