@@ -25,11 +25,11 @@ def loadTwint(sent, period):
         if period == 'daily':
             if sent == "Bitcoin": #add a min replies for bitcoin because otherwise too long to load
                 c.Min_replies = 1 # min replies
-            c.Since = (dt.datetime.today() - dt.timedelta(days = 1)).strftime('%Y-%m-%d')
+            c.Since = (dt.datetime.today() - dt.timedelta(days = 1)).strftime('%Y-%m-%d %X')
             c.Output = f"tempTweets/dailyTweets{sent}.json"
         else:
             c.Min_replies = 10 # min replies for monthly
-            c.Since = (dt.datetime.today() - dt.timedelta(days = 30)).strftime('%Y-%m-%d')
+            c.Since = (dt.datetime.today() - dt.timedelta(days = 30)).strftime('%Y-%m-%d %X')
             c.Output = f"tempTweets/monthlyTweets{sent}.json"
         c.Hide_output = True
         c.Store_json = True

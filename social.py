@@ -14,12 +14,51 @@ import logging
 import random
 import os
 import numpy as np
+import datetime as dt
+
+#binance utilities
+from binance.websockets import BinanceSocketManager
+from binance.client import Client
+import include.config
+import websocket, json, pprint
+from datetime import datetime
+
 from dash.dependencies import Output, State, Input
 import plotly.graph_objs as go
 
 import include.tweet_stream as ts
 from collections import deque
+
 import dash_bootstrap_components as dbc
+
+
+#getting the prices from binance
+def getPrice(crypto, period):
+    # lien pour ce connecter au server de binance pour avoir en temps réel les données
+    SOCKET = "wss://stream.binance.com:9443/ws/btcusdt@kline_1m"
+
+    client = Client(include.config.api_key, include.config.api_secret, tld='us')
+    bm = BinanceSocketManager(client)
+
+    if period == 'daily':
+        days = 2
+    else:
+        days = 31
+
+    # fetch 1 minute klines for the last day up until now
+    try:
+        klines = client.get_historical_klines(f"{crypto}USD", Client.KLINE_INTERVAL_1HOUR, f"{days} day ago UTC") # timing à choisir soit en direct avec un websocket soit un appel API
+    except Exception:
+        klines = client.get_historical_klines(f"{crypto}BTC", Client.KLINE_INTERVAL_1HOUR, f"{days} day ago UTC")
+    columns = ['Date','Open','Close','High','Low','Volume','CloseTime','QuoteAssetVolume','NumberofTrade','TakerbuybaseV','TakerbuyquoteV','Ignore']
+    df = pd.DataFrame(klines,columns=columns)
+    df['Date'] = pd.to_datetime(df['Date']/1000,unit='s')
+    df['Close'] = df['Close'].astype(float)
+
+    df = df.loc[:, ('Date','Close')]
+    return df
+
+
 
 def socialInit(sent, period = 'daily'):
 
@@ -91,10 +130,9 @@ def socialInit(sent, period = 'daily'):
     if 'date' in df.columns:
         df.sort_values('date', inplace=True)
 
-
-
-
     return df
+
+
 
 
 def socialHeader(crypto):
@@ -105,8 +143,22 @@ def socialHeader(crypto):
 
     return headerBlock
 
-def socialGraph(sent, period):
+def socialGraph(sent, period, crypto):
     df = socialInit(sent, period) #gets the data
+
+
+    dfPrice = getPrice(crypto, period)
+
+
+    if period == 'daily':
+        dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 1)))
+    else:
+        dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 30)))
+        
+    dfPrice = dfPrice.dropna()
+
+    #scale bitcoin price
+    dfPrice['Close'] = 0.25 + (dfPrice['Close'] - min(dfPrice['Close']))/(2*(max(dfPrice['Close']) - min(dfPrice['Close'])))
 
     #Update Content
     ###############
@@ -130,7 +182,16 @@ def socialGraph(sent, period):
                                 'data': [
                                     go.Scatter(
                                         x=df['date'],
-                                        y=df['smoothed_sentiment'] #takes only smoothed sentiment with values
+                                        y=df['smoothed_sentiment'],
+                                        line=dict(color="blue"),
+                                        name='Twitter sentiment' #takes only smoothed sentiment with values
+
+                                    ),
+                                    go.Scatter(
+                                        x=dfPrice['Date'],
+                                        y=dfPrice['Close'],
+                                        line=dict(color="black"),
+                                        name='Scaled price'#takes only smoothed sentiment with values
 
                                     )],
 
@@ -159,11 +220,13 @@ def socialGraph(sent, period):
                                    }
                             ), style={'width':'30%', 'display':'inline-block'}),
                     html.Div(
-                        html.A(
-                        f"Download {sent} {period} sentiment data by clicking on me !",
-                        href=f"tempTweets/{period}Tweets{sent}.json",
-                        download=f"{sent}{period}sent"
-                        ), style={"padding":"2em"}
+                        html.Button(
+                            children=html.A(
+                            f"Download {sent} {period} sentiment data",
+                            href=f"tempTweets/{period}Tweets{sent}.json",
+                            download=f"{sent}{period}sent"
+                            ), style={"margin":"2em", "color":"black"}
+                        )
                     )
 
                     ])
