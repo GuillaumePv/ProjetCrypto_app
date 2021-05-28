@@ -46,7 +46,13 @@ else
   ;;
   *)        echo "unknown: $OSTYPE" ;;
     esac
+  cd include
+  git clone --depth=1 https://github.com/twintproject/twint.git
+  cd twint
   pip3 install . -r requirements.txt
+  cd ..
+  cd ..
+  pip3 install -r requirements.txt
 fi
 echo "App is loading...."
 python3 main.py
