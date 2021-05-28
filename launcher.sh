@@ -48,23 +48,6 @@ else
     esac
   pip3 install . -r requirements.txt
 fi
-
-case "$OSTYPE" in
-  darwin*)  
-  #echo "OSX"
-  #open http://127.0.0.1:8050/ 
-  ;; 
-  linux*)   
-  #echo "LINUX"
-  #open http://127.0.0.1:8050/ 
-  ;;
-  msys*)    
-  #echo "WINDOWS"
-  #start http://127.0.0.1:8050/ 
-  ;;
-  *)        echo "unknown: $OSTYPE" ;;
-    esac
-
 echo "App is loading...."
 python3 main.py
 

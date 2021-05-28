@@ -287,5 +287,5 @@ def render_content(tab):
 
 #Run the app if it is main
 if __name__ == '__main__':
-    Timer(0.5, open_browser).start()
+    Timer(1, open_browser).start()
     app.run_server(debug=True, port=port)
