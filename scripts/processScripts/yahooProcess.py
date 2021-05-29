@@ -8,8 +8,8 @@ path_original = Path(__file__).resolve().parents[1]
 path_data = (path_original / "../data/raw/").resolve()
 path_data_processed = (path_original / "../data/processed/").resolve()
 
-def getData():
-    dates = pd.date_range("17/08/2017", end=date.today(), freq='d')
+def getData(ticker, name):
+    dates = pd.date_range("17/08/2020", end=date.today(), freq='d')
     dates = pd.to_datetime(dates)
 
     print("GETTING VIX DATA...")
@@ -41,12 +41,8 @@ def getData():
     yahoo_df = yahoo_df.fillna(method='ffill')
 
 
-
-    ticker_list = ['BTC', 'ETH', 'EOS']
-
-    for ticker in ticker_list:
-        final_df = pd.read_csv(str(path_data_processed) + f'/{ticker}_finaldb.csv')
-        final_df['date'] = pd.to_datetime(final_df['date'])
-        final = final_df.merge(yahoo_df, right_on='date', left_on='date')
-        final = final.dropna()
-        final.to_csv(str(path_data_processed) + f"/{ticker}_finaldb.csv", index=False)
+    final_df = pd.read_csv(str(path_data_processed) + f'/{ticker}_finaldb.csv')
+    final_df.date = pd.to_datetime(yahoo_df.date)
+    final = final_df.merge(yahoo_df, on=['date'], how='left')
+    final = final.dropna()
+    final.to_csv(str(path_data_processed) + f"/{ticker}_finaldb.csv", index=False)

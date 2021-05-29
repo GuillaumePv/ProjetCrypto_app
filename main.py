@@ -87,7 +87,8 @@ app.layout = html.Div([
     dcc.Tabs(id="tabs-styled-with-props", value='tab-1',children=[
         dcc.Tab(label='Home', value='tab-1'),
         dcc.Tab(label='Analysis', value='tab-2', children = html.Div([html.Div(id='analysis'),
-        html.Div(id='cryptoStat')])),
+        html.Div(id='cryptoStat'),
+		html.Div(id='robotPred')])),
         dcc.Tab(label='Social',
                 value='tab-3',
                 children = html.Div([html.Div(id='social',
@@ -202,6 +203,18 @@ def serve_static(path):
 ## Analysis Tab ##
 ##################
 
+#getting the data for prediction callback
+from scripts.getData import getData
+@app.callback(Output('robotPred', 'children'),
+              Input(component_id='sentiment_term', component_property='value'))
+def get_pred(sentiment_term):
+    #gets content from social.py
+
+	ticker = coindf[coindf['Name'] == sentiment_term].loc[:, 'Symbol'].values[0]
+	getData(ticker, sentiment_term)
+	return 0
+
+
 @app.callback(Output('analysis', 'children'),
               [Input(component_id='sentiment_term', component_property='value'),
               Input('interval-component', 'n_intervals')])
@@ -289,5 +302,5 @@ def render_content(tab):
 
 #Run the app if it is main
 if __name__ == '__main__':
-    Timer(1, open_browser).start()
+    #Timer(1, open_browser).start()
     app.run_server(debug=True, port=port)

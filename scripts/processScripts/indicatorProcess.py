@@ -124,17 +124,14 @@ def mass_index(df):
     df = df.join(MassI)
     return df
 
-def addIndicators():
-
-    cryptos = ['BTC', 'ETH', 'EOS']
-    for crypto in cryptos:
-        print(f"ADDING INDICATORS TO {crypto}...")
-        df = pd.read_csv(str(path_data_processed) + f"/{crypto}_finaldb.csv")
-        df=MA(df, 10)
-        df=ADX(df,2,7)
-        df=RSI(df,10)
-        df=MACD(df,5,10)
-        df=mass_index(df)
-        df = df.fillna(0)
-        df = df.iloc[17:, :]
-        df.to_csv(str(path_data_processed) + f"/{crypto}_finaldb.csv", index=False)
+def addIndicators(ticker, name):
+    print(f"ADDING INDICATORS TO {ticker}...")
+    df = pd.read_csv(str(path_data_processed) + f"/{ticker}_finaldb.csv")
+    df=MA(df, 10)
+    df=ADX(df,2,7)
+    df=RSI(df,10)
+    df=MACD(df,5,10)
+    df=mass_index(df)
+    df = df.fillna(0)
+    df = df.iloc[17:, :]
+    df.to_csv(str(path_data_processed) + f"/{ticker}_finaldb.csv", index=False)

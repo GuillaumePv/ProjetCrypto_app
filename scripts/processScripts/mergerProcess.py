@@ -44,40 +44,35 @@ for i in range(len(file_list)):
 ## Merge DB price & Twitter ##
 ##############################
 
-def mergeBinance():
+def mergeBinance(ticker, name):
     print("MERGING BINANCE AND TWEETS TOGETHER...")
-    list_ticker = ['ETH','BTC','EOS']
 
-    list_df = []
-    for i in range(len(list_ticker)):
-        df = pd.read_csv(str(path_data) + f"/{list_ticker[i]}_data.csv")
-        list_df.append(df)
+
+
+    df_data = pd.read_csv(str(path_data) + f"/{ticker}_data.csv")
+
 
 
     clean_data_path = str(path_data_processed) + "/"
 
     ## Path
-    tweetETH = str(path_data_processed) + "/ETH_tweet_clean.csv"
-    tweetBTC = str(path_data_processed) + "/BTC_tweet_clean.csv"
-    tweetEOS = str(path_data_processed) + "/EOS_tweet_clean.csv"
+    tweet = str(path_data_processed) + f"/{ticker}_tweet_clean.csv"
 
-    list_tweet = [tweetETH,tweetBTC,tweetEOS]
-    list_tweet_df = []
+    df = pd.read_csv(tweet)
+    df = df.sort_values('date')
 
-    for tweet in list_tweet:
-        df = pd.read_csv(tweet)
-        #df['date'] = pd.to_datetime(df['date'])
-        list_tweet_df.append(df.sort_values('date'))
 
-    for i in range(len(list_df)):
-        df_outer = list_df[i].merge(list_tweet_df[i], on=['date'], how='left') #beug ici
-        df_outer.to_csv(clean_data_path+list_ticker[i]+'_finaldb.csv', index=False)
+    df_data.rename(columns = {'Date':'date'}, inplace = True)
+    df_data['date'] = pd.to_datetime(df_data['date'], unit = 's')
+    df_data['date'] = pd.to_datetime(df_data['date'])
+    df['date'] = pd.to_datetime(df['date'])
+
+    df_outer = df_data.merge(df, on=['date'], how='left') #beug ici
+    df_outer.to_csv(clean_data_path+ticker+'_finaldb.csv', index=False)
 
     #Adding the pytrend data
-
-    for crypto in [('bitcoin', 'BTC'), ('ethereum', 'ETH'), ('eos', 'EOS')]:
-        dfTrend = pd.read_csv(str(path_data) + f'/{crypto[0]}_data_trend.csv')
-        df = pd.read_csv(clean_data_path+crypto[1]+'_finaldb.csv')
-        df = df.merge(dfTrend, on=['date'], how='right')
-        df = df[df['Close'] > 0]
-        df.to_csv(clean_data_path+crypto[1]+'_finaldb.csv', index=False)
+    dfTrend = pd.read_csv(str(path_data) + f'/{ticker}_data_trend.csv')
+    df = pd.read_csv(clean_data_path+ticker+'_finaldb.csv')
+    df = df.merge(dfTrend, on=['date'], how='left')
+    df = df[df['Close'] > 0]
+    df.to_csv(clean_data_path+ticker+'_finaldb.csv', index=False)

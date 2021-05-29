@@ -8,10 +8,10 @@ path_original = Path(__file__).resolve().parents[1]
 path_data = (path_original / "../data/raw/").resolve()
 path_data_processed = (path_original / "../data/processed/").resolve()
 
-def processTweet(name):
-    print(f"PROCESSING {name} TWEETS...")
+def processTweet(ticker):
+    print(f"PROCESSING {ticker} TWEETS...")
     #Twitter data
-    dft = pd.read_json(str(path_data) + f"/{name}_data_tweet.json", lines = True,  orient='records')
+    dft = pd.read_json(str(path_data) + f"/{ticker}_data_tweet.json", lines = True,  orient='records')
 
     #date formatting
     dft['date'] = pd.to_datetime(dft['created_at'])
@@ -52,12 +52,15 @@ def processTweet(name):
         dfF.loc[i, 'tweet_count'] = len(dfPartial)
 
         #create sentiment for the day
-        model = SentimentIntensityAnalyzer()
-        score = []
-        for j in dfPartial["tweet"]:
-            sent_dict = model.polarity_scores(j)
-            score.append(sent_dict['compound'])
-        score = sum(score)/len(score)
+        if len(dfPartial) != 0:
+            model = SentimentIntensityAnalyzer()
+            score = []
+            for j in dfPartial["tweet"]:
+                sent_dict = model.polarity_scores(j)
+                score.append(sent_dict['compound'])
+            score = sum(score)/len(score)
+        else:
+            score = 0
         dfF.loc[i, 'daily_sent'] = score
 
 
@@ -68,9 +71,8 @@ def processTweet(name):
             else:
                 dfF.loc[i, j] = 0
 
-    dfF.to_csv(str(path_data_processed) + f"/{name}_tweet_clean.csv",index=False)
-    print(f"FINISHED PROCESSING {name} TWEETS")
+    dfF.to_csv(str(path_data_processed) + f"/{ticker}_tweet_clean.csv",index=False)
+    print(f"FINISHED PROCESSING {ticker} TWEETS")
 
-def cleanTweets():
-    for i in ['BTC', 'ETH', 'EOS']:
-        processTweet(i)
+def cleanTweets(ticker, name):
+    processTweet(ticker)

@@ -8,7 +8,7 @@
 # Command + K + U
 
 
-from config import api_key, api_secret
+from scripts.config import api_key, api_secret
 from binance.client import Client
 import csv
 from pandas_datareader import data
@@ -25,9 +25,9 @@ def obtain_cryptodata(Cryptoname):
     client = Client(api_key, api_secret)
     print(f"FETCHING BINANCE DATA FOR {Cryptoname}...")
     tod = dt.datetime.now()
-    d = dt.timedelta(days = 10)
+    d = dt.timedelta(days = 27)
     start_date = (tod-d).strftime("%-d %b, %Y")
-    csvfile = open(str(path_data) + f'/{Cryptoname}_data_binance.csv', 'w',newline='')
+    csvfile = open(str(path_data) + f'/{Cryptoname}_data.csv', 'w',newline='')
     candlestick_writer= csv.writer(csvfile, delimiter=',')
 
     # appel de Binance API pour avoir les données
@@ -57,13 +57,10 @@ def obtainCrypto_yahoofinance(Cryptoname):
     df['date'] = df.index
     df.to_csv(str(path_data) + f'/{Cryptoname}_data.csv')
 
-def getRawCrypto():
+def getRawCrypto(ticker, name):
     print("GETTING CRYPTO RAW DATA")
 
-    ticker_list=['BTC', 'ETH', 'EOS']
-
-    for ticker in ticker_list:
-        obtainCrypto_yahoofinance(ticker)
+    obtain_cryptodata(ticker)
 
 
 '''
