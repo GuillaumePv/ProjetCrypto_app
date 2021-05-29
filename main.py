@@ -30,6 +30,8 @@ import analysisTab
 from homepage import homePage
 
 import webbrowser
+import subprocess
+
 from threading import Timer
 
 # Initialize log file #
@@ -42,7 +44,8 @@ app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 port = 8050 # or simply open on the default `8050` port
 
 def open_browser():
-	webbrowser.open_new("http://localhost:{}".format(port))
+    subprocess.Popen("firefox http://localhost:{}".format(port),shell = False)
+	#webbrowser.open("http://localhost:{}".format(port), new = 2)
 
 server = app.server
 
@@ -289,5 +292,6 @@ def render_content(tab):
 
 #Run the app if it is main
 if __name__ == '__main__':
-    Timer(1, open_browser).start()
+    #Timer(1, open_browser).start()
+    #open_browser()
     app.run_server(debug=True, port=port)
