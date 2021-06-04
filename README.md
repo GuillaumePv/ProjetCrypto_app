@@ -41,15 +41,11 @@ git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 ```
 
 ## TO-DO
-- [x] ajouter des stats dexcriptives au projet
-- [ ] ML Model 
-- [x] arreter flux de tweet
-- [x] trouver les indicateurs
+
+- [x] Stop tweet dataflow
+- [x] find indicators
 - [x] cleaning data
-- [ ] tester les différents algos sur bitcoin
-- [ ] tester sur les autres cryptos
-- [x] faire une libraries pour le layout
-- [ ] Ecrire le rapport
-- [ ] tourner la vidéo de présentation
-- [x] tester avec un subprocess + launch tab => style jupyter notebook
-- [x] améliorer le launcher en installant toutes les libraires
+- [x] make libraries for the layout
+- [ ] write report
+- [ ] make video
+- [x] improve launcher.sh to install necesary librairies

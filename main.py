@@ -32,7 +32,8 @@ from homepage import homePage
 import webbrowser
 import subprocess
 
-from threading import Timer
+import pickle
+import sklearn
 
 # Initialize log file #
 logging.basicConfig(filename='infos.log',level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -57,6 +58,11 @@ options = []
 for name in coindf['Name'].values:
     options.append({'label':name,'value':name})
 
+## Load ML model
+filename = "./models/BTC_rf_finalized_model.sav"
+loaded_model = pickle.load(open(filename, 'rb'))
+print("=== ML model was loaded !!! ===")
+logging.info("=== ML model was loaded !!! ===")
 
 app.layout = html.Div([
     dcc.Interval(
@@ -233,7 +239,7 @@ def defineCardPrediction():
         #dbc.CardHeader("Prediction", className="text-center"),
         dbc.CardBody(
             [
-                html.H5("Prediction: % that the newt day return will be > 1% !!!", className="card-title text-center"),
+                html.H5("Prediction: % that the next day return will be > 1% !!!", className="card-title text-center"),
                 html.P(
                     "x% next day will be positive",
                     className="card-text text-center",

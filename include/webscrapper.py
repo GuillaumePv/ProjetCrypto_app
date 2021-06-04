@@ -31,9 +31,10 @@ def scrapCoin():
                     name = row[1].text
                 #row[1].text = row[1].text.replace(row[2].text,"")
                 #name = row[1].text.replace(row[2].text,"")
+                market_cap = "$"+row[3].text.split("$")[2]
                 row_value.append(name) #Name
                 row_value.append(row[2].text) #Symbol
-                row_value.append(row[3].text) #Market cap
+                row_value.append(market_cap) #Market cap
                 row_value.append(row[4].text) #Price
                 row_value.append(row[5].text) #Circulating Supply
                 row_value.append(row[6].text) #Volume (24h)
