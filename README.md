@@ -31,7 +31,8 @@ git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 │   
 │   
 ├── main.py   <- Main python file that manage all our different codes
-│     
+│
+├── models/   <- ML models used in the dasboard are stocked in this folder     
 │
 ├── infos.log         <- Data dictionaries, manuals, and all other explanatory materials.
 │

@@ -228,11 +228,35 @@ def defineCard(title,text):
 
     return card_content
 
+def defineCardPrediction():
+    card_content = [
+        #dbc.CardHeader("Prediction", className="text-center"),
+        dbc.CardBody(
+            [
+                html.H5("Prediction: % that the newt day return will be > 1% !!!", className="card-title text-center"),
+                html.P(
+                    "x% next day will be positive",
+                    className="card-text text-center",
+                ),
+            ]
+        ),
+    ]
+
+    return card_content
+
 
 @app.callback(Output('cryptoStat','children'),
             Input(component_id='sentiment_term', component_property='value'))
 def update_content_stat_crypto(sentiment_term):
     df = coindf[coindf['Name'] == sentiment_term]
+
+    row_0 = dbc.Row(
+    [
+        dbc.Col(dbc.Card(defineCardPrediction(), color="primary", inverse=True))
+    ],
+    className="m-4",
+    )
+
     row_1 = dbc.Row(
     [
         dbc.Col(dbc.Card(defineCard("Rank",df.index), color="primary", outline=True)),
@@ -259,7 +283,7 @@ def update_content_stat_crypto(sentiment_term):
         ],
         className="m-4",
     )
-    cards = html.Div([row_1, row_2,row_3])
+    cards = html.Div([row_0, row_1, row_2,row_3])
 
     return cards
 
