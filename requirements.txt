@@ -101,3 +101,6 @@ zope.event==4.5.0
 zope.interface==5.2.0
 tweepy==3.10.0
 sklearn==0.0
+pandas_datareader
+pytrends
+yahoo_fin

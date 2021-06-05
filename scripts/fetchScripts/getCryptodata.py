@@ -32,7 +32,10 @@ def obtain_cryptodata(Cryptoname):
 
     # appel de Binance API pour avoir les données
     # 1er arg: pair de crypto => pour le moment c'est crypto /USDT
-    candlesticks = client.get_historical_klines(f"{Cryptoname}USDT", Client.KLINE_INTERVAL_1DAY, start_date)
+    try:
+        candlesticks = client.get_historical_klines(f"{Cryptoname}USDT", Client.KLINE_INTERVAL_1DAY, start_date)
+    except Exception:
+        candlesticks = client.get_historical_klines(f"{Cryptoname}BTC", Client.KLINE_INTERVAL_1DAY, start_date)
     candlestick_writer.writerow(['Date','Open','High','Low','Close','Volume','CloseTime','QuoteAssetVolume','NumberofTrade','TakerbuybaseV','TakerbuyquoteV','Ignore'])
     for i in range(len(candlesticks)):
         candlesticks[i][0] = candlesticks[i][0]/1000

@@ -29,9 +29,13 @@ import social
 import analysisTab
 from homepage import homePage
 
+#getting the data for prediction callback
+from scripts.getData import getData
+
 # ML model
 import pickle
 import sklearn
+from sklearn.preprocessing import StandardScaler
 
 # Initialize log file #
 logging.basicConfig(filename='infos.log',level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -90,6 +94,7 @@ app.layout = html.Div([
     dcc.Tabs(id="tabs-styled-with-props", value='tab-1',children=[
         dcc.Tab(label='Home', value='tab-1'),
         dcc.Tab(label='Analysis', value='tab-2', children = html.Div([html.Div(id='analysis'),
+        html.Div(id='robotPred',children=html.Div('Loading....')),
         html.Div(id='cryptoStat')])),
         dcc.Tab(label='Social',
                 value='tab-3',
@@ -205,6 +210,8 @@ def serve_static(path):
 ## Analysis Tab ##
 ##################
 
+
+
 @app.callback(Output('analysis', 'children'),
               [Input(component_id='sentiment_term', component_property='value'),
               Input('interval-component', 'n_intervals')])
@@ -228,14 +235,14 @@ def defineCard(title,text):
 
     return card_content
 
-def defineCardPrediction():
+def defineCardPrediction(pred, name):
     card_content = [
         #dbc.CardHeader("Prediction", className="text-center"),
         dbc.CardBody(
             [
-                html.H5("Prediction: % that the next day return will be > 1% !!!", className="card-title text-center"),
+                html.H5(f"{name} Prediction: % that the next day return will be > 1% !!!", className="card-title text-center"),
                 html.P(
-                    "x% next day will be positive",
+                    f"{100*pred} % ",
                     className="card-text text-center",
                 ),
             ]
@@ -244,18 +251,44 @@ def defineCardPrediction():
 
     return card_content
 
+@app.callback(Output('robotPred', 'children'),
+              Input(component_id='sentiment_term', component_property='value'))
+def get_pred(sentiment_term):
+    #gets content from social.py
+    
+    ticker = coindf[coindf['Name'] == sentiment_term].loc[:, 'Symbol'].values[0]
+    if ticker == 'USDT':
+        card_content = [
+        #dbc.CardHeader("Prediction", className="text-center"),
+        dbc.CardBody(
+            [
+                html.H5("No ML prediction for Tether !! Change Crypto !!", className="card-title text-center"),
+            ]
+        ),
+    ]
+        row_0 = dbc.Row(
+        [
+            dbc.Col(dbc.Card(card_content, color="warning", inverse=True))
+        ],
+        className="m-4",
+        )
+    else:
+        df = getData(ticker, sentiment_term)
+        features = np.concatenate((['Open','Close','Volume'],df.iloc[:,12:-2].columns))
+        pred = loaded_model.predict_proba([df[features].values[-1]])
+        row_0 = dbc.Row(
+        [
+            dbc.Col(dbc.Card(defineCardPrediction(pred[0][0],sentiment_term), color="primary", inverse=True))
+        ],
+        className="m-4",
+        )
+    card_prediction = html.Div([row_0])
+    return card_prediction
 
 @app.callback(Output('cryptoStat','children'),
             Input(component_id='sentiment_term', component_property='value'))
 def update_content_stat_crypto(sentiment_term):
     df = coindf[coindf['Name'] == sentiment_term]
-
-    row_0 = dbc.Row(
-    [
-        dbc.Col(dbc.Card(defineCardPrediction(), color="primary", inverse=True))
-    ],
-    className="m-4",
-    )
 
     row_1 = dbc.Row(
     [
@@ -270,7 +303,7 @@ def update_content_stat_crypto(sentiment_term):
         [
             dbc.Col(dbc.Card(defineCard("Price",df['Price']), color="success", outline=True)),
             dbc.Col(dbc.Card(defineCard("Circulating supply",df['Circulating Supply']), color="warning", outline=True)),
-            dbc.Col(dbc.Card(defineCard("Volumne (24h)",df['Volume(24h)']), color="danger", outline=True)),
+            dbc.Col(dbc.Card(defineCard("Volume (24h)",df['Volume(24h)']), color="danger", outline=True)),
         ],
         className="m-4",
     )
@@ -283,7 +316,7 @@ def update_content_stat_crypto(sentiment_term):
         ],
         className="m-4",
     )
-    cards = html.Div([row_0, row_1, row_2,row_3])
+    cards = html.Div([row_1, row_2,row_3])
 
     return cards
 
