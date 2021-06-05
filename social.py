@@ -137,7 +137,7 @@ def socialInit(sent, period = 'daily'):
 
 def socialHeader(crypto):
     headerBlock = html.Div([
-                    html.H3(f'Twitter live sentiment of {crypto}'),
+                    html.H3(f'{crypto} social tab'),
                     ],
                     style={'margin':'1em 1em 0 1em'})
 
@@ -154,7 +154,7 @@ def socialGraph(sent, period, crypto):
         dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 1)))
     else:
         dfPrice = dfPrice.where(dfPrice['Date'] > (dt.datetime.today() - dt.timedelta(days = 30)))
-        
+
     dfPrice = dfPrice.dropna()
 
     #scale bitcoin price
@@ -196,8 +196,8 @@ def socialGraph(sent, period, crypto):
                                     )],
 
                                     'layout': go.Layout(
-                                        xaxis={'title': 'Time'},
-                                        yaxis={'title': 'Sentiment'},
+                                        #xaxis={'title': 'Time'},
+                                        #yaxis={'title': 'Sentiment'},
                                         margin={'l': 80, 'b': 40, 't': 10, 'r': 40},
                                         plot_bgcolor='#ececec',
                                         yaxis_range=[0,1])
