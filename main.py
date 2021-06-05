@@ -29,9 +29,7 @@ import social
 import analysisTab
 from homepage import homePage
 
-import webbrowser
-import subprocess
-
+# ML model
 import pickle
 import sklearn
 
@@ -43,10 +41,6 @@ logging.basicConfig(filename='infos.log',level=logging.DEBUG, format='%(asctime)
 
 app = dash.Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 port = 8050 # or simply open on the default `8050` port
-
-def open_browser():
-    subprocess.Popen("firefox http://localhost:{}".format(port),shell = False)
-	#webbrowser.open("http://localhost:{}".format(port), new = 2)
 
 server = app.server
 
@@ -61,7 +55,7 @@ for name in coindf['Name'].values:
 ## Load ML model
 filename = "./models/BTC_rf_finalized_model.sav"
 loaded_model = pickle.load(open(filename, 'rb'))
-print("=== ML model was loaded !!! ===")
+#print("=== ML model was loaded !!! ===")
 logging.info("=== ML model was loaded !!! ===")
 
 app.layout = html.Div([
@@ -322,6 +316,4 @@ def render_content(tab):
 
 #Run the app if it is main
 if __name__ == '__main__':
-    #Timer(1, open_browser).start()
-    #open_browser()
     app.run_server(debug=True, port=port)
