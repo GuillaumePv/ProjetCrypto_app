@@ -263,6 +263,6 @@ Thumbs.db #thumbnail cache on Windows
 .prof
 
 #files
-.csv
+*.csv
 
 # End of https://www.toptal.com/developers/gitignore/api/python,database,intellij
