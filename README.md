@@ -59,6 +59,6 @@ git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 - [x] find indicators
 - [x] cleaning data
 - [x] make libraries for the layout
-- [ ] write report
-- [ ] make video
+- [x] write report
+- [x] make video
 - [x] improve launcher.sh to install necesary librairies
