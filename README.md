@@ -10,7 +10,7 @@ Millions of users are registered on cryptocurrency exchange platforms without po
 * Dimitri André : dimitri.andre@unil.ch
 * Guillaume Pavé : guillaume.pave@unil.ch
 
-## Install project and librairies
+## Install project and libraries
 
 1) clone project on your computer
 
