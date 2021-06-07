@@ -1,4 +1,4 @@
-# Presentation of project
+# Presentation of the project
 
 ## Abstract
 
