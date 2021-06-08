@@ -17,7 +17,7 @@ Millions of users are registered on cryptocurrency exchange platforms without po
 ```bash
 git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 ```
-2) launch the shell script to install the virtual environment and run the app
+2) launch the shell script to run the app (will install the virtual environments requirements on first use)
 
 ```bash
 .\launcher.sh
@@ -25,10 +25,6 @@ git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 
 3) Go to http://127.0.0.1:8050/ in your browser
 
-4) After having installed the virtual environment you can launch the project again with
-```bash
-python3 main.py
-```
 
 # Project structure
 
