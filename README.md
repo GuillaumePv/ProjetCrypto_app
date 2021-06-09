@@ -17,13 +17,14 @@ Millions of users are registered on cryptocurrency exchange platforms without po
 ```bash
 git clone https://github.com/GuillaumePv/ProjetCrypto_app.git
 ```
-2) launch the shell script to run our code
+2) launch the shell script to run the app (will install the virtual environments requirements on first use)
 
 ```bash
 .\launcher.sh
 ```
 
 3) Go to http://127.0.0.1:8050/ in your browser
+
 
 # Project structure
 
