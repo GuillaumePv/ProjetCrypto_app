@@ -56,7 +56,7 @@ else
   cd ..
   pip3 install -r requirements.txt
 fi
-source venv/bin/activate
+
 echo "App is loading...."
 python3 main.py
 
