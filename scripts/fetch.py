@@ -17,6 +17,12 @@ def fetchData(ticker, name):
     if not os.path.isdir(str(path_data_origin)):
         os.mkdir(str(path_data))
         os.mkdir(str(path_data_processed))
+    
+    if not os.path.isdir(str(path_data)):
+        os.mkdir(str(path_data))
+    
+    if not os.path.isdir(str(path_data_processed)):
+        os.mkdir(str(path_data_processed))
 
 
     cryptoRaw.getRawCrypto(ticker, name)
