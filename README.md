@@ -10,6 +10,8 @@ Millions of users are registered on cryptocurrency exchange platforms without po
 * Dimitri André : dimitri.andre@unil.ch
 * Guillaume Pavé : guillaume.pave@unil.ch
 
+# RUN ON LOCAL ENVIRONMENT ONLY (on your computer) !! NOT ON NUVOLOS !!
+
 ## Install project and libraries
 
 1) clone project on your computer
